@@ -164,6 +164,7 @@ class pynortek():
         header = {}
         header['Burst sampling'] = False
         datefmt = '%d.%m.%Y %H:%M:%S'
+        datefmt_2nd_option = '%d/%m/%Y %H:%M:%S'
         header_field = None
         header['files'] = []
         while True:
@@ -259,13 +260,19 @@ class pynortek():
                 elif('Time of first measurement' in l):
                     ind2 = l.rfind('  ')
                     tstr = l[ind2+2:].replace('\n','')
-                    ttmp = datetime.datetime.strptime(tstr,datefmt)
+                    try:
+                        ttmp = datetime.datetime.strptime(tstr,datefmt)
+                    except:
+                        ttmp = datetime.datetime.strptime(tstr,datefmt_2nd_option)
                     ttmp = ttmp.replace(tzinfo=self.timezone)
                     header['Time of first measurement'] = ttmp
                 elif('Time of last measurement' in l):
                     ind2 = l.rfind('  ')
                     tstr = l[ind2+2:].replace('\n','')
-                    ttmp = datetime.datetime.strptime(tstr,datefmt)
+                    try:
+                        ttmp = datetime.datetime.strptime(tstr,datefmt)
+                    except:
+                        ttmp = datetime.datetime.strptime(tstr,datefmt_2nd_option)
                     ttmp = ttmp.replace(tzinfo=self.timezone)                    
                     header['Time of last measurement'] = ttmp
                 elif('Transformation matrix' in l):
